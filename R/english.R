@@ -57,6 +57,25 @@ as.english <- function (x, ...) {
   UseMethod("english")
 }
 
+ones <- c(`0` = "", `1` = "one", `2` = "two", `3` = "three", `4` = "four",
+          `5` = "five", `6` = "six", `7` = "seven", `8` = "eight", `9` = "nine")
+
+suffixes <- c("thousand", "million", "billion", "trillion", "quadrillion",
+              "quintillion", "sextillion", "septillion")
+
+teens <- c(`0` = "ten", `1` = "eleven", `2` = "twelve", `3` = "thirteen",
+           `4` = "fourteen", `5` = "fifteen", `6` = "sixteen", `7` = "seventeen",
+           `8` = "eighteen", `9` = "nineteen")
+
+tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
+          `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
+
+
+library(Rcpp) 
+sourceCpp("helper.cpp")
+dictionaries(ones, suffixs, teens, tens)
+
+
 #' @rdname as.english
 #' @export
 english <- as.english
@@ -200,18 +219,6 @@ Ops.english <- function (e1, e2) {
   structure(NextMethod(.Generic), class = "english", useUK = attr(e1, "useUK"))
 }
 
-ones <- c(`0` = "", `1` = "one", `2` = "two", `3` = "three", `4` = "four",
-          `5` = "five", `6` = "six", `7` = "seven", `8` = "eight", `9` = "nine")
-
-suffixes <- c("thousand", "million", "billion", "trillion", "quadrillion",
-              "quintillion", "sextillion", "septillion")
-
-teens <- c(`0` = "ten", `1` = "eleven", `2` = "twelve", `3` = "thirteen",
-           `4` = "fourteen", `5` = "fifteen", `6` = "sixteen", `7` = "seventeen",
-           `8` = "eighteen", `9` = "nineteen")
-
-tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
-          `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
 
 makeNumber <- function (n)
   as.numeric(paste(n, collapse = ""))
