@@ -1,12 +1,12 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-extern CharacterVector ones;
-extern CharacterVector suffixs;
-extern CharacterVector teens;
-extern CharacterVector tens;
+CharacterVector ones;
+CharacterVector suffixs;
+CharacterVector teens;
+CharacterVector tens;
 
-//[[Rcpp::export]]
-void dictionaries(CharacterVector ones_, CharacterVector suffixs_, CharacterVector teens_, CharacterVector tens_){
+// [[Rcpp::export]]
+void dictionaries_import(CharacterVector ones_, CharacterVector suffixs_, CharacterVector teens_, CharacterVector tens_){
     ones = ones_;
     suffixs = suffixs_;
     teens = teens_;

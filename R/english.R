@@ -70,10 +70,9 @@ teens <- c(`0` = "ten", `1` = "eleven", `2` = "twelve", `3` = "thirteen",
 tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
           `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
 
-
 library(Rcpp) 
 sourceCpp("helper.cpp")
-dictionaries(ones, suffixs, teens, tens)
+#dictionaries_import(ones, suffixs, teens, tens)
 
 
 #' @rdname as.english
