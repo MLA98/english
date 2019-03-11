@@ -70,10 +70,31 @@ teens <- c(`0` = "ten", `1` = "eleven", `2` = "twelve", `3` = "thirteen",
 tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
           `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
 
+a <- c(100)
+
+makeNumber <- function (n)
+  as.numeric(paste(n, collapse = ""))
+
+trim <- function (text)
+  sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
+
+
+split_digits <- function(x) {
+  d <- character()
+  while(x > 0) {
+    d <- c(d, x %% 10)
+    x <- x %/% 10
+  }
+  if(length(d) == 0)
+    d <- "0"
+  d
+}
+
+
 library(Rcpp) 
-library(RInside)
 sourceCpp("helper.cpp")
 dictionaries_import(ones, suffixes, teens, tens)
+functions_import(split_digits)
 
 
 #' @rdname as.english
@@ -221,19 +242,4 @@ Ops.english <- function (e1, e2) {
 }
 
 
-makeNumber <- function (n)
-  as.numeric(paste(n, collapse = ""))
 
-trim <- function (text)
-  sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
-
-split_digits <- function(x) {
-  d <- character()
-  while(x > 0) {
-    d <- c(d, x %% 10)
-    x <- x %/% 10
-  }
-  if(length(d) == 0)
-    d <- "0"
-  d
-}
