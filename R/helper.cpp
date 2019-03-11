@@ -6,7 +6,6 @@ CharacterVector ones;
 CharacterVector suffixs;
 CharacterVector teens;
 CharacterVector tens;
-Function split_digits = NULL;
 
 // [[Rcpp::export]]
 void dictionaries_import(CharacterVector ones_, CharacterVector suffixs_, CharacterVector teens_, CharacterVector tens_){
@@ -14,14 +13,13 @@ void dictionaries_import(CharacterVector ones_, CharacterVector suffixs_, Charac
     suffixs = suffixs_;
     teens = teens_;
     tens = tens_;
-    NumericVector a = NumericVector::create(1);
-    CharacterVector b = split_digits(a);
-    Rcout << b[0];
 }
 
 // [[Rcpp::export]]
-void functions_import(Function split_digits_){
-    split_digits = split_digits_;
+void functions_import(Function split_digits_,Function paste){
+    //split_digits = split_digits_;
+    CharacterVector pasted = paste(ones,teens);
+    Rcout<<pasted;
     // NumericVector v = NumericVector::create(1,2,3);
     
 }
