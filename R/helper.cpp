@@ -9,10 +9,10 @@ Function makeNumber = myEnv["makeNumber"];
 Function paste = myEnv["p"];
 Function trim = myEnv["trim"];
 Function and_ = myEnv["and"];
-CharacterVector ones = myEnv["ones"];
-CharacterVector suffixes = myEnv["suffixes"];
-CharacterVector teens = myEnv["teens"];
-CharacterVector tens = myEnv["tens"];
+// CharacterVector ones = myEnv["ones"];
+//CharacterVector suffixes = myEnv["suffixes"];
+//CharacterVector teens = myEnv["teens"];
+//CharacterVector tens = myEnv["tens"];
 
 // // [[Rcpp::export]]
 // void functions_import(Function split_digits_,Function paste_){
@@ -23,10 +23,10 @@ CharacterVector tens = myEnv["tens"];
 //     // NumericVector v = NumericVector::create(1,2,3);
     
 // }
-
-
-
-
+CharacterVector ones = CharacterVector::create(Named("0")= "", Named("1")= "one", Named("2")= "two", Named("3") = "three", Named("4")= "four", Named("5")= "five", Named("6")= "six",Named("7")= "seven", Named("8")= "eight", Named("9")= "nine");
+CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "eleven", Named("2")= "twelve", Named("3") = "thirteen", Named("4")= "fourteen", Named("5")= "fifteen", Named("6")= "sixteen",Named("7")= "seventeen", Named("8")= "eighteen", Named("9")= "nineteen");
+CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") = "thirty", Named("4")= "forty", Named("5")= "fifty", Named("6")= "sixty",Named("7")= "seventy", Named("8")= "eighty", Named("9")= "ninety");
+CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
 
 
