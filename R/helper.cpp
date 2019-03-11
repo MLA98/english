@@ -29,44 +29,45 @@ CharacterVector tens = myEnv["tens"];
 
 
 
+
 //[[Rcpp::export]]
 CharacterVector helper(NumericVector x, LogicalVector UK_){
     LogicalVector UK = UK_;
     CharacterVector digits = split_digits(x);
-    Rcout << digits << "\n";
+    // Rcout << digits << "\n";
     int nDigits = digits.size();
-    Rcout << nDigits << "\n";
+    //Rcout << nDigits << "\n";
     if (nDigits == 1){
         CharacterVector ans = ones[digits];
-        Rcout << ans<< "\n";
+        //Rcout << ans<< "\n";
         return ones[digits];
     }
     else if (nDigits == 2){
         if (x[0] <= 19){
             CharacterVector digit_1= CharacterVector::create(digits[0]);
             CharacterVector ans = teens[digit_1];
-            Rcout << ans<< "\n";
-            return ones[digits];
+            //Rcout << ans<< "\n";
+            return ans;
         }
         else{
             CharacterVector digit_2= CharacterVector::create(digits[1]);
-            Rcout << digit_2 << "\n";
+            // Rcout << digit_2 << "\n";
             std::string digit_1_ = as<std::string>(digits[0]);
-            std::cout << digit_1_ << "\n";
+            // std::cout << digit_1_ << "\n";
             int digit_1__ = std::stod(digit_1_);
             NumericVector digit_1 = NumericVector::create(digit_1__);
-            Rcout << digit_1<< "\n";
+            // Rcout << digit_1<< "\n";
             return trim(paste(tens[digit_2], helper(digit_1, UK)));
         }
     }
     else if (nDigits == 3){
         CharacterVector digit_3= CharacterVector::create(digits[2]);
-        std::cout<< "adf";
+        // std::cout<< "adf";
         NumericVector two_to_one = NumericVector::create(1,0);
         CharacterVector digit_2_to_1 = digits[two_to_one];
-        std::cout<< "adf";
+        // std::cout<< "adf";
         CharacterVector ans = trim(paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper(makeNumber(digit_2_to_1), UK)));
-        Rcout << ans<< "\n";
+        // Rcout << ans<< "\n";
         return ans;
     }
     else{
@@ -78,33 +79,40 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
             CharacterVector x__ = CharacterVector::create(x_);
             return(x_);
         }
-        std::cout << "hi";
-        IntegerVector nDigits_ = IntegerVector::create(nDigits);
+        // std::cout << "hi";
+        IntegerVector nDigits_ = IntegerVector::create(nDigits - 1);
         IntegerVector times3_nSuf_plus_1 = IntegerVector::create((3 * nSuffix + 1 - 1));
         IntegerVector v1;
-        std::cout << "hi";
+        // std::cout << "hi";
         if (nDigits > (3 * nSuffix + 1)){
+            // std::cout << "hi";
             v1 = rev(seq(max(times3_nSuf_plus_1), min(nDigits_)));
         }
         else{
+            // Rcout<<nDigits_ << "  " <<times3_nSuf_plus_1;
             v1 = seq(max(nDigits_), min(times3_nSuf_plus_1));
         }
-        std::cout << "hi";
+        // std::cout << "hi";
         // IntegerVector nDigits_ = IntegerVector::create(nDigits);
         // IntegerVector times3_nSuf_plus_1 = IntegerVector::create((3 * nSuffix + 1));
         // IntegerVector v1 = seq(max(nDigits_), min(times3_nSuf_plus_1));
         IntegerVector times3_nSuf = IntegerVector::create((3 * nSuffix) - 1);
-        std::cout << "hi";
+        // std::cout << "hi";
         IntegerVector zero = IntegerVector::create(0);
         IntegerVector v2 = rev(seq(max(zero), min(times3_nSuf)));
-        std::cout << "hi";
+        // std::cout << "hi";
+        std::string sufix_string = as<std::string>(suffixes[nSuffix - 1]);
+        CharacterVector sufix_charv = CharacterVector::create(sufix_string);
+        CharacterVector dd = makeNumber(digits[v1]);
+        // Rcout << dd << "\n";
+        CharacterVector ans = trim(paste(helper(makeNumber(digits[v1]), UK)));
+        // Rcout << ans << "\n";
         return trim(paste(
             helper(makeNumber(digits[v1]), UK), 
-            suffixes[nSuffix], 
+            sufix_charv, 
             and_(digits[v2], UK),
             helper(makeNumber(digits[v2]), UK)
             ));
-        std::cout << "hi";
     }
 }
 

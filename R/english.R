@@ -165,7 +165,7 @@ format.english <- function(x, ...) {
 #' @export
 as.character.english <- function (x, ...) {
   UK <- attr(x, "useUK")
-  helper(x, UK)
+  # helper(x, UK)
   # helper <- function (x) {
   #   digits <- split_digits(x)
   #   nDigits <- length(digits)
