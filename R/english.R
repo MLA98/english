@@ -78,8 +78,8 @@ makeNumber <- function (n)
 trim <- function (text)
   sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
 
-and <- function (dvec) {
-    if(UK && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
+and <- function (dvec, UK_) {
+    if(UK_ && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
 }
 
 split_digits <- function(x) {
@@ -97,7 +97,6 @@ p <- paste
 
 library(Rcpp) 
 sourceCpp("helper.cpp")
-helper(c(12))
 #functions_import(split_digits, paste,)
 
 
@@ -166,7 +165,7 @@ format.english <- function(x, ...) {
 #' @export
 as.character.english <- function (x, ...) {
   UK <- attr(x, "useUK")
-  helper(x)
+  helper(x, UK)
   # helper <- function (x) {
   #   digits <- split_digits(x)
   #   nDigits <- length(digits)
@@ -200,11 +199,11 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n], helper))
+    r[n] <- paste("minus", sapply(-x[n], helper, UK))
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
-    r[p] <- sapply(x[p], helper)
+    r[p] <- sapply(x[p], helper, UK)
   r[is.na(x)] <- ""
   r[is.nan(x)] <- "not a number"
   if (any(k <- x < 0 & is.infinite(x)))
