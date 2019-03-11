@@ -70,7 +70,7 @@ teens <- c(`0` = "ten", `1` = "eleven", `2` = "twelve", `3` = "thirteen",
 tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
           `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
 
-a <- c(100)
+a <- c(5)
 
 makeNumber <- function (n)
   as.numeric(paste(n, collapse = ""))
@@ -78,6 +78,9 @@ makeNumber <- function (n)
 trim <- function (text)
   sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
 
+and <- function (dvec) {
+    if(UK && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
+}
 
 split_digits <- function(x) {
   d <- character()
@@ -94,7 +97,7 @@ p <- paste
 
 library(Rcpp) 
 sourceCpp("helper.cpp")
-helper(c(100))
+helper(c(12))
 #functions_import(split_digits, paste,)
 
 
@@ -163,9 +166,6 @@ format.english <- function(x, ...) {
 #' @export
 as.character.english <- function (x, ...) {
   UK <- attr(x, "useUK")
-  and <- function (dvec) {
-    if(UK && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
-  }
   helper(x)
   # helper <- function (x) {
   #   digits <- split_digits(x)
