@@ -90,11 +90,12 @@ split_digits <- function(x) {
   d
 }
 
+p <- paste
 
 library(Rcpp) 
 sourceCpp("helper.cpp")
-dictionaries_import(ones, suffixes, teens, tens)
-functions_import(split_digits, paste)
+helper(c(100))
+#functions_import(split_digits, paste,)
 
 
 #' @rdname as.english
