@@ -72,7 +72,7 @@ tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
 
 library(Rcpp) 
 sourceCpp("helper.cpp")
-#dictionaries_import(ones, suffixs, teens, tens)
+dictionaries_import(ones, suffixes, teens, tens)
 
 
 #' @rdname as.english
@@ -143,32 +143,33 @@ as.character.english <- function (x, ...) {
   and <- function (dvec) {
     if(UK && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
   }
-  helper <- function (x) {
-    digits <- split_digits(x)
-    nDigits <- length(digits)
-    if (nDigits == 1)
-      as.vector(ones[digits])
-    else if (nDigits == 2)
-      if (x <= 19)
-        as.vector(teens[digits[1]])
-    else trim(paste(tens[digits[2]],
-                    helper(as.numeric(digits[1]))))
-    else if (nDigits == 3)
-      trim(paste(ones[digits[3]], "hundred",
-                 and(digits[2:1]),
-                 helper(makeNumber(digits[2:1]))))
-    else {
-      nSuffix <- ((nDigits + 2) %/% 3) - 1
-      if (nSuffix > length(suffixes)) {
-        warning(paste(x, "is too large!"))
-        return(as.character(as.vector(x)))
-      }
-      trim(paste(helper(makeNumber(digits[nDigits:(3 * nSuffix + 1)])),
-                 suffixes[nSuffix],
-                 and(digits[(3 * nSuffix):1]),
-                 helper(makeNumber(digits[(3 * nSuffix):1]))))
-    }
-  }
+  helper(x)
+  # helper <- function (x) {
+  #   digits <- split_digits(x)
+  #   nDigits <- length(digits)
+  #   if (nDigits == 1)
+  #     as.vector(ones[digits])
+  #   else if (nDigits == 2)
+  #     if (x <= 19)
+  #       as.vector(teens[digits[1]])
+  #   else trim(paste(tens[digits[2]],
+  #                   helper(as.numeric(digits[1]))))
+  #   else if (nDigits == 3)
+  #     trim(paste(ones[digits[3]], "hundred",
+  #                and(digits[2:1]),
+  #                helper(makeNumber(digits[2:1]))))
+  #   else {
+  #     nSuffix <- ((nDigits + 2) %/% 3) - 1
+  #     if (nSuffix > length(suffixes)) {
+  #       warning(paste(x, "is too large!"))
+  #       return(as.character(as.vector(x)))
+  #     }
+  #     trim(paste(helper(makeNumber(digits[nDigits:(3 * nSuffix + 1)])),
+  #                suffixes[nSuffix],
+  #                and(digits[(3 * nSuffix):1]),
+  #                helper(makeNumber(digits[(3 * nSuffix):1]))))
+  #   }
+  # }
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
   if (any(!bad & x%%1 != 0)) {
