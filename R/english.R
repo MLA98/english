@@ -71,6 +71,7 @@ tens <- c(`2` = "twenty", `3` = "thirty", `4` = "forty", `5` = "fifty",
           `6` = "sixty", `7` = "seventy", `8` = "eighty", `9` = "ninety")
 
 library(Rcpp) 
+library(RInside)
 sourceCpp("helper.cpp")
 dictionaries_import(ones, suffixes, teens, tens)
 
