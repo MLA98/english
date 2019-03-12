@@ -75,24 +75,24 @@ as.english <- function (x, ...) {
 makeNumber <- function (n)
   as.numeric(paste(n, collapse = ""))
 
-# trim <- function (text)
-#   sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
+trim <- function (text)
+  sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
 
 
-and <- function (dvec, UK_) {
-    if(UK_ && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
-}
+# and <- function (dvec, UK_) {
+#     if(UK_ && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
+# }
 
-split_digits <- function(x) {
-  d <- character()
-  while(x > 0) {
-    d <- c(d, x %% 10)
-    x <- x %/% 10
-  }
-  if(length(d) == 0)
-    d <- "0"
-  d
-}
+# split_digits <- function(x) {
+#   d <- character()
+#   while(x > 0) {
+#     d <- c(d, x %% 10)
+#     x <- x %/% 10
+#   }
+#   if(length(d) == 0)
+#     d <- "0"
+#   d
+# }
 
 p <- paste
 

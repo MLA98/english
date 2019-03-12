@@ -4,40 +4,53 @@
 
 using namespace Rcpp;
 Environment myEnv = Environment::global_env();
-Function split_digits = myEnv["split_digits"];
+//Function split_digits = myEnv["split_digits"];
 Function makeNumber = myEnv["makeNumber"];
 Function paste = myEnv["p"];
-//Function trim = myEnv["trim"];
-Function and_ = myEnv["and"];
+Function trim = myEnv["trim"]; // not worth it to implement it in Cpp
+//Function and_ = myEnv["and"];
 // CharacterVector ones = myEnv["ones"];
 //CharacterVector suffixes = myEnv["suffixes"];
 //CharacterVector teens = myEnv["teens"];
 //CharacterVector tens = myEnv["tens"];
 
-// // [[Rcpp::export]]
-// void functions_import(Function split_digits_,Function paste_){
-//     Function split_digits = split_digits_;
-//     Function paste = paste_;
-//     CharacterVector pasted = paste(ones,teens);
-//     Rcout<<pasted;
-//     // NumericVector v = NumericVector::create(1,2,3);
-    
-// }
+
+
+
 CharacterVector ones = CharacterVector::create(Named("0")= "", Named("1")= "one", Named("2")= "two", Named("3") = "three", Named("4")= "four", Named("5")= "five", Named("6")= "six",Named("7")= "seven", Named("8")= "eight", Named("9")= "nine");
 CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "eleven", Named("2")= "twelve", Named("3") = "thirteen", Named("4")= "fourteen", Named("5")= "fifteen", Named("6")= "sixteen",Named("7")= "seventeen", Named("8")= "eighteen", Named("9")= "nineteen");
 CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") = "thirty", Named("4")= "forty", Named("5")= "fifty", Named("6")= "sixty",Named("7")= "seventy", Named("8")= "eighty", Named("9")= "ninety");
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
 
-CharacterVector trim(CharacterVector x, const char* which = "both")
-{
-    return trimws(x, which);
+CharacterVector split_digits(NumericVector digit){
+    CharacterVector digit_ = as<CharacterVector>(digit);
+    std::string digit_str = as<std::string>(digit_); 
+    char * chararr = new char[digit_str.size()];
+    std::copy(digit_str.begin(), digit_str.end(), chararr);
+    CharacterVector retV;
+    for (int i = digit_str.size() - 1; i>=0; i-- ){
+        retV.push_back(chararr[i]);
+    }
+    return retV;
 }
 
 
+CharacterVector and_(CharacterVector dvec, bool UK){
+    CharacterVector dvec_ = makeNumber(dvec);
+    std::string made = as<std::string>(dvec_);
+    int made_ = std::stoi(made);
+    if (UK && (made_ > 0) && (made_ < 100)){
+        return ("and");
+    }
+    else{
+        return ("");
+    }
+}
+
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, LogicalVector UK_){
+CharacterVector helper(NumericVector x, bool UK_){
     LogicalVector UK = UK_;
     CharacterVector digits = split_digits(x);
     //Rcout << trimws(digits, "both");
@@ -45,16 +58,14 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
     int nDigits = digits.size();
     //Rcout << nDigits << "\n";
     if (nDigits == 1){
-        CharacterVector ans = ones[digits];
         //Rcout << ans<< "\n";
         return ones[digits];
     }
     else if (nDigits == 2){
         if (x[0] <= 19){
             CharacterVector digit_1= CharacterVector::create(digits[0]);
-            CharacterVector ans = teens[digit_1];
             //Rcout << ans<< "\n";
-            return ans;
+            return teens[digit_1];
         }
         else{
             CharacterVector digit_2= CharacterVector::create(digits[1]);
@@ -120,7 +131,8 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
             helper(makeNumber(digits[v2]), UK)
             );
         // Rcout << ans << "\n";
-        return trim(pasted);
+        CharacterVector trimed = trim(pasted);
+        return trimed;
     }
 }
 
