@@ -78,6 +78,7 @@ makeNumber <- function (n)
 # trim <- function (text)
 #   sub("^ *", "", sub(" *$", "", gsub("  +", " ", text)))
 
+
 and <- function (dvec, UK_) {
     if(UK_ && (d <- makeNumber(dvec)) > 0 && d < 100) "and" else ""
 }

@@ -29,6 +29,12 @@ CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") 
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
 
+CharacterVector trim(CharacterVector x, const char* which = "both")
+{
+    return trimws(x, which);
+}
+
+
 
 //[[Rcpp::export]]
 CharacterVector helper(NumericVector x, LogicalVector UK_){
@@ -59,7 +65,7 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
             NumericVector digit_1 = NumericVector::create(digit_1__);
             // Rcout << digit_1<< "\n";
             CharacterVector pasted = paste(tens[digit_2], helper(digit_1, UK));
-            return trimws(pasted);
+            return trim(pasted);
             }
     }
     else if (nDigits == 3){
@@ -69,7 +75,7 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
         CharacterVector digit_2_to_1 = digits[two_to_one];
         // std::cout<< "adf";
         CharacterVector pasted = paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper(makeNumber(digit_2_to_1), UK));
-        CharacterVector ans = trimws(pasted);
+        CharacterVector ans = trim(pasted);
         // Rcout << ans<< "\n";
         return ans;
     }
@@ -114,7 +120,7 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
             helper(makeNumber(digits[v2]), UK)
             );
         // Rcout << ans << "\n";
-        return trimws(pasted);
+        return trim(pasted);
     }
 }
 
