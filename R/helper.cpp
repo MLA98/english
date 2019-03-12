@@ -7,7 +7,7 @@ Environment myEnv = Environment::global_env();
 Function split_digits = myEnv["split_digits"];
 Function makeNumber = myEnv["makeNumber"];
 Function paste = myEnv["p"];
-Function trim = myEnv["trim"];
+//Function trim = myEnv["trim"];
 Function and_ = myEnv["and"];
 // CharacterVector ones = myEnv["ones"];
 //CharacterVector suffixes = myEnv["suffixes"];
@@ -34,6 +34,7 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 CharacterVector helper(NumericVector x, LogicalVector UK_){
     LogicalVector UK = UK_;
     CharacterVector digits = split_digits(x);
+    //Rcout << trimws(digits, "both");
     // Rcout << digits << "\n";
     int nDigits = digits.size();
     //Rcout << nDigits << "\n";
@@ -57,8 +58,9 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
             int digit_1__ = std::stod(digit_1_);
             NumericVector digit_1 = NumericVector::create(digit_1__);
             // Rcout << digit_1<< "\n";
-            return trim(paste(tens[digit_2], helper(digit_1, UK)));
-        }
+            CharacterVector pasted = paste(tens[digit_2], helper(digit_1, UK));
+            return trimws(pasted);
+            }
     }
     else if (nDigits == 3){
         CharacterVector digit_3= CharacterVector::create(digits[2]);
@@ -66,7 +68,8 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
         NumericVector two_to_one = NumericVector::create(1,0);
         CharacterVector digit_2_to_1 = digits[two_to_one];
         // std::cout<< "adf";
-        CharacterVector ans = trim(paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper(makeNumber(digit_2_to_1), UK)));
+        CharacterVector pasted = paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper(makeNumber(digit_2_to_1), UK));
+        CharacterVector ans = trimws(pasted);
         // Rcout << ans<< "\n";
         return ans;
     }
@@ -103,16 +106,15 @@ CharacterVector helper(NumericVector x, LogicalVector UK_){
         // std::cout << "hi";
         std::string sufix_string = as<std::string>(suffixes[nSuffix - 1]);
         CharacterVector sufix_charv = CharacterVector::create(sufix_string);
-        CharacterVector dd = makeNumber(digits[v1]);
         // Rcout << dd << "\n";
-        CharacterVector ans = trim(paste(helper(makeNumber(digits[v1]), UK)));
-        // Rcout << ans << "\n";
-        return trim(paste(
+        CharacterVector pasted = paste(
             helper(makeNumber(digits[v1]), UK), 
             sufix_charv, 
             and_(digits[v2], UK),
             helper(makeNumber(digits[v2]), UK)
-            ));
+            );
+        // Rcout << ans << "\n";
+        return trimws(pasted);
     }
 }
 
