@@ -31,11 +31,14 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, LogicalVector UK){
+CharacterVector helper(NumericVector x, LogicalVector UK_){
+    LogicalVector UK = UK_;
     CharacterVector digits = split_digits(x);
-    // Rcout << digits << "\n";
     int nDigits = digits.size();
-    //Rcout << nDigits << "\n";
+    // if (nDigits >= 27){
+    //     CharacterVector x_
+    //     return x;
+    // }
     if (nDigits == 1){
         CharacterVector ans = ones[digits];
         //Rcout << ans<< "\n";
@@ -71,11 +74,9 @@ CharacterVector helper(NumericVector x, LogicalVector UK){
     }
     else{
         int nSuffix = (nDigits + 2) / 3 - 1;
-        if (nSuffix > suffixes.size()) {
+        if (nDigits >= 28) {
             Rcerr << (paste(x, "is too large!"));
-            //CharacterVector x_ = CharacterVector::create(x);
-            std::string x_ = as<std::string>(x);
-            CharacterVector x__ = CharacterVector::create(x_);
+            CharacterVector x_ = paste(x);
             return(x_);
         }
         // std::cout << "hi";
