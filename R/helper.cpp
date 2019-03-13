@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include <iostream>
 
 
 using namespace Rcpp;
@@ -31,8 +30,7 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, LogicalVector UK_){
-    LogicalVector UK = UK_;
+CharacterVector helper(NumericVector x, LogicalVector UK){
     CharacterVector digits = split_digits(x);
     int nDigits = digits.size();
     // if (nDigits >= 27){
