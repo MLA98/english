@@ -50,7 +50,7 @@ CharacterVector split_digits(NumericVector digit){
 
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, bool UK){
+CharacterVector helper(NumericVector x, LogicalVector UK){
     CharacterVector digits = split_digits(x);
     //Rcout << trimws(digits, "both");
     // Rcout << digits << "\n";
