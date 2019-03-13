@@ -95,8 +95,8 @@ split_digits <- function(x) {
 }
 
 p <- paste
-library(Rcpp) 
-sourceCpp("helper.cpp")
+
+dyn.load("helper.so")
 #functions_import(split_digits, paste,)
 
 
