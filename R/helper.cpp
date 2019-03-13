@@ -31,8 +31,7 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, LogicalVector UK_){
-    LogicalVector UK = UK_;
+CharacterVector helper(NumericVector x, LogicalVector UK){
     CharacterVector digits = split_digits(x);
     // Rcout << digits << "\n";
     int nDigits = digits.size();
