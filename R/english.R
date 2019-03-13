@@ -160,12 +160,12 @@ format.english <- function(x, ...) {
   format(as.character.english(x), ...)
 }
 
-
+library(Rcpp)
+dyn.load("helper.so")
 #' @rdname as.english
 #' @export
 as.character.english <- function (x, ...) {
-  UK <- attr(x, "useUK")
-  
+ UK <- attr(x, "useUK")
   # helper(x, UK)
   # helper <- function (x) {
   #   digits <- split_digits(x)
@@ -193,7 +193,7 @@ as.character.english <- function (x, ...) {
   #                helper(makeNumber(digits[(3 * nSuffix):1]))))
   #   }
   # }
-  dyn.load("helper.so")
+  # function(x) x == .Call("u32_rtools_test", x)
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
   if (any(!bad & x%%1 != 0)) {
@@ -201,7 +201,7 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n], .Call("helper"), UK))
+    r[n] <- paste("minus", sapply(-x[n],function(x) x == .Call("helper", UK)))
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
