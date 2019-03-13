@@ -8,7 +8,7 @@ Environment myEnv = Environment::global_env();
 Function makeNumber = myEnv["makeNumber"];
 Function paste = myEnv["p"];
 Function trim = myEnv["trim"]; // not worth it to implement it in Cpp
-//Function and_ = myEnv["and"];
+Function and_ = myEnv["and"];
 // CharacterVector ones = myEnv["ones"];
 //CharacterVector suffixes = myEnv["suffixes"];
 //CharacterVector teens = myEnv["teens"];
@@ -36,22 +36,21 @@ CharacterVector split_digits(NumericVector digit){
 }
 
 
-CharacterVector and_(CharacterVector dvec, bool UK){
-    CharacterVector dvec_ = makeNumber(dvec);
-    std::string made = as<std::string>(dvec_);
-    int made_ = std::stoi(made);
-    if (UK && (made_ > 0) && (made_ < 100)){
-        return ("and");
-    }
-    else{
-        return ("");
-    }
-}
+// CharacterVector and_(CharacterVector dvec, bool UK){
+//     CharacterVector dvec_ = makeNumber(dvec);
+//     std::string made = as<std::string>(dvec_);
+//     int made_ = std::stoi(made);
+//     if (UK && (made_ > 0) && (made_ < 100)){
+//         return ("and");
+//     }
+//     else{
+//         return ("");
+//     }
+// }
 
 
 //[[Rcpp::export]]
-CharacterVector helper(NumericVector x, bool UK_){
-    LogicalVector UK = UK_;
+CharacterVector helper(NumericVector x, bool UK){
     CharacterVector digits = split_digits(x);
     //Rcout << trimws(digits, "both");
     // Rcout << digits << "\n";
