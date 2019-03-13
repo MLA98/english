@@ -96,7 +96,6 @@ split_digits <- function(x) {
 
 p <- paste
 
-dyn.load("helper.so")
 #functions_import(split_digits, paste,)
 
 
@@ -194,6 +193,7 @@ as.character.english <- function (x, ...) {
   #                helper(makeNumber(digits[(3 * nSuffix):1]))))
   #   }
   # }
+  dyn.load("helper.so")
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
   if (any(!bad & x%%1 != 0)) {
@@ -201,11 +201,11 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n], helper, UK))
+    r[n] <- paste("minus", sapply(-x[n], .Call("helper"), UK))
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
-    r[p] <- sapply(x[p], helper, UK)
+    r[p] <- sapply(x[p], .Call("helper"), UK)
   r[is.na(x)] <- ""
   r[is.nan(x)] <- "not a number"
   if (any(k <- x < 0 & is.infinite(x)))
