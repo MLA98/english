@@ -44,7 +44,7 @@
 #' @export
 
 library(Rcpp)
-dyn.load("src/english.so")
+dyn.load("../src/english.so")
 
 #'
 #' @examples
@@ -165,11 +165,11 @@ format.english <- function(x, ...) {
 }
 
 
-
 #' @rdname as.english
 #' @export
 as.character.english <- function (x, ...) {
  UK <- attr(x, "useUK")
+ UK_dummy <- .Call("get_UK", UK)
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
   if (any(!bad & x%%1 != 0)) {

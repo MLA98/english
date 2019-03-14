@@ -14,12 +14,15 @@ CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "
 CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") = "thirty", Named("4")= "forty", Named("5")= "fifty", Named("6")= "sixty",Named("7")= "seventy", Named("8")= "eighty", Named("9")= "ninety");
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
+bool UK2;
 
+RcppExport SEXP get_UK(SEXP UK){
+    UK2 = UK;
+    return UK;
+}
 
-
-RcppExport SEXP helper2(SEXP x_, SEXP UK){
+RcppExport SEXP helper2(SEXP x_){
     NumericVector x = x_;
-    LogicalVector UK_ = UK;
     CharacterVector digits = split_digits(x);
     int nDigits = digits.size();
     if (nDigits == 1){
@@ -35,14 +38,14 @@ RcppExport SEXP helper2(SEXP x_, SEXP UK){
             std::string digit_1_ = as<std::string>(digits[0]);
             int digit_1__ = std::stod(digit_1_);
             NumericVector digit_1 = NumericVector::create(digit_1__);
-            return trim(paste(tens[digit_2], helper2(digit_1, UK)));
+            return trim(paste(tens[digit_2], helper2(digit_1)));
             }
     }
     else if (nDigits == 3){
         CharacterVector digit_3= CharacterVector::create(digits[2]);
         NumericVector two_to_one = NumericVector::create(1,0);
         CharacterVector digit_2_to_1 = digits[two_to_one];
-        return trim(paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper2(makeNumber(digit_2_to_1), UK)));
+        return trim(paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK2), helper2(makeNumber(digit_2_to_1))));
     }
     else{
         int nSuffix = (nDigits + 2) / 3 - 1;
@@ -71,10 +74,10 @@ RcppExport SEXP helper2(SEXP x_, SEXP UK){
         std::string sufix_string = as<std::string>(suffixes[nSuffix - 1]);
         CharacterVector sufix_charv = CharacterVector::create(sufix_string);
         CharacterVector pasted = paste(
-            helper2(makeNumber(digits[v1]), UK), 
+            helper2(makeNumber(digits[v1])), 
             sufix_charv, 
-            and_(digits[v2], UK),
-            helper2(makeNumber(digits[v2]), UK)
+            and_(digits[v2], UK2),
+            helper2(makeNumber(digits[v2]))
             );
         CharacterVector trimed = trim(pasted);
         return trimed;
