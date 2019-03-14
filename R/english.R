@@ -42,6 +42,10 @@
 #' @return A numerical object that can be printed as English words, or coerced to
 #'         character as English words
 #' @export
+
+library(Rcpp)
+dyn.load("src/english.so")
+
 #'
 #' @examples
 #' english(10000) + (-5):5
@@ -160,40 +164,12 @@ format.english <- function(x, ...) {
   format(as.character.english(x), ...)
 }
 
-library(Rcpp)
-dyn.load("helper.so")
+
+
 #' @rdname as.english
 #' @export
 as.character.english <- function (x, ...) {
  UK <- attr(x, "useUK")
-  # helper(x, UK)
-  # helper <- function (x) {
-  #   digits <- split_digits(x)
-  #   nDigits <- length(digits)
-  #   if (nDigits == 1)
-  #     as.vector(ones[digits])
-  #   else if (nDigits == 2)
-  #     if (x <= 19)
-  #       as.vector(teens[digits[1]])
-  #   else trim(paste(tens[digits[2]],
-  #                   helper(as.numeric(digits[1]))))
-  #   else if (nDigits == 3)
-  #     trim(paste(ones[digits[3]], "hundred",
-  #                and(digits[2:1]),
-  #                helper(makeNumber(digits[2:1]))))
-  #   else {
-  #     nSuffix <- ((nDigits + 2) %/% 3) - 1
-  #     if (nSuffix > length(suffixes)) {
-  #       warning(paste(x, "is too large!"))
-  #       return(as.character(as.vector(x)))
-  #     }
-  #     trim(paste(helper(makeNumber(digits[nDigits:(3 * nSuffix + 1)])),
-  #                suffixes[nSuffix],
-  #                and(digits[(3 * nSuffix):1]),
-  #                helper(makeNumber(digits[(3 * nSuffix):1]))))
-  #   }
-  # }
-  # function(x) x == .Call("u32_rtools_test", x)
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
   if (any(!bad & x%%1 != 0)) {
@@ -201,11 +177,11 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n],function(x) x == .Call("helper", UK)))
+    r[n] <- paste("minus", sapply(-x[n], function(x,y) x = .Call("helper2", x, y), UK))
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
-    r[p] <- sapply(x[p], .Call("helper"), UK)
+    r[p] <- sapply(x[p], function(x,y) x = .Call("helper2", x, y), UK)
   r[is.na(x)] <- ""
   r[is.nan(x)] <- "not a number"
   if (any(k <- x < 0 & is.infinite(x)))
