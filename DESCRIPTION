@@ -10,7 +10,7 @@ Description: Allow numbers to be presented in an English language
 Suggests: utils, knitr, rmarkdown
 License: GPL-2
 LazyLoad: yes
-NeedsCompilation: no
+NeedsCompilation: yes
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
