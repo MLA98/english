@@ -48,7 +48,7 @@ RcppExport SEXP helper2(SEXP uu){
         std::cout<< "worinima \n"; 
         NumericVector two_to_one = NumericVector::create(1,0);
         CharacterVector digit_2_to_1 = digits[two_to_one];
-        CharacterVector pasted = paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK2), helper(makeNumber(digit_2_to_1)));
+        CharacterVector pasted = paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK2), helper2(makeNumber(digit_2_to_1)));
         CharacterVector ans = trim(pasted);
         // Rcout << ans<< "\n";
         return ans;
