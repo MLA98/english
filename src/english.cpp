@@ -5,7 +5,7 @@ using namespace Rcpp;
 Environment myEnv = Environment::global_env();
 Function split_digits = myEnv["split_digits"];
 Function makeNumber = myEnv["makeNumber"];
-Function paste = myEnv["p"];
+Function paste = myEnv["paste"];
 Function trim = myEnv["trim"];
 Function and_ = myEnv["and"];
 
@@ -14,15 +14,16 @@ CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "
 CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") = "thirty", Named("4")= "forty", Named("5")= "fifty", Named("6")= "sixty",Named("7")= "seventy", Named("8")= "eighty", Named("9")= "ninety");
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
-bool UK2;
+LogicalVector UK2;
 
 RcppExport SEXP get_UK(SEXP UK){
     UK2 = UK;
+    Rcout << UK2 << "\n";
     return UK;
 }
 
-RcppExport SEXP helper2(SEXP x_){
-    NumericVector x = x_;
+RcppExport SEXP helper2(SEXP uu){
+    NumericVector x = uu;
     CharacterVector digits = split_digits(x);
     int nDigits = digits.size();
     if (nDigits == 1){
@@ -42,10 +43,16 @@ RcppExport SEXP helper2(SEXP x_){
             }
     }
     else if (nDigits == 3){
+        std::cout<< "worinima \n"; 
         CharacterVector digit_3= CharacterVector::create(digits[2]);
+        std::cout<< "worinima \n"; 
         NumericVector two_to_one = NumericVector::create(1,0);
         CharacterVector digit_2_to_1 = digits[two_to_one];
-        return trim(paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK2), helper2(makeNumber(digit_2_to_1))));
+        CharacterVector pasted = paste(ones[digit_3], "hundred", and_(digit_2_to_1, UK), helper(makeNumber(digit_2_to_1), UK));
+        CharacterVector ans = trim(pasted);
+        // Rcout << ans<< "\n";
+        return ans;
+
     }
     else{
         int nSuffix = (nDigits + 2) / 3 - 1;
