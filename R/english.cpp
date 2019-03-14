@@ -19,7 +19,6 @@ RcppExport SEXP helper2(SEXP x_, SEXP UK){
     Function paste = myEnv["p"];
     Function trim = myEnv["trim"];
     Function and_ = myEnv["and"];
-    Rcout << ones;
     NumericVector x = x_;
     LogicalVector UK_ = UK;
     CharacterVector digits = split_digits(x);
