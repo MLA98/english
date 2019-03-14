@@ -2,12 +2,7 @@
 
 
 using namespace Rcpp;
-Environment myEnv = Environment::global_env();
-Function split_digits = myEnv["split_digits"];
-Function makeNumber = myEnv["makeNumber"];
-Function paste = myEnv["p"];
-Function trim = myEnv["trim"];
-Function and_ = myEnv["and"];
+
 
 CharacterVector ones = CharacterVector::create(Named("0")= "", Named("1")= "one", Named("2")= "two", Named("3") = "three", Named("4")= "four", Named("5")= "five", Named("6")= "six",Named("7")= "seven", Named("8")= "eight", Named("9")= "nine");
 CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "eleven", Named("2")= "twelve", Named("3") = "thirteen", Named("4")= "fourteen", Named("5")= "fifteen", Named("6")= "sixteen",Named("7")= "seventeen", Named("8")= "eighteen", Named("9")= "nineteen");
@@ -16,8 +11,14 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 
 
 
-
+// [[Rcpp::export]]
 RcppExport SEXP helper2(SEXP x_, SEXP UK){
+    Environment myEnv = Environment::global_env();
+Function split_digits = myEnv["split_digits"];
+Function makeNumber = myEnv["makeNumber"];
+Function paste = myEnv["p"];
+Function trim = myEnv["trim"];
+Function and_ = myEnv["and"];
     NumericVector x = x_;
     LogicalVector UK_ = UK;
     CharacterVector digits = split_digits(x);
