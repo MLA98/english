@@ -43,8 +43,7 @@
 #'         character as English words
 #' @export
 
-library(Rcpp)
-dyn.load("src/english.so")
+
 
 #'
 #' @examples
@@ -101,7 +100,7 @@ split_digits <- function(x) {
 p <- paste
 
 #functions_import(split_digits, paste,)
-
+library(Rcpp)
 
 #' @rdname as.english
 #' @export
@@ -169,6 +168,7 @@ format.english <- function(x, ...) {
 #' @rdname as.english
 #' @export
 as.character.english <- function (x, ...) {
+  dyn.load("english.so")
  UK <- attr(x, "useUK")
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
