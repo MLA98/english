@@ -166,7 +166,6 @@ format.english <- function(x, ...) {
 #' @export
 as.character.english <- function (x, ...) {
   dyn.load(paste((path.package("englishcpp")), "/libs/englishcpp.so", sep =""))
-  dyn.load("~/R/englishcpp/libs/englishcpp.so")
  UK <- attr(x, "useUK")
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
