@@ -1,4 +1,4 @@
-Package: english
+Package: englishcpp
 Type: Package
 Title: Translate Integers into English
 Version: 1.2-2
@@ -10,7 +10,8 @@ Description: Allow numbers to be presented in an English language
 Suggests: utils, knitr, rmarkdown
 License: GPL-2
 LazyLoad: yes
-NeedsCompilation: no
+NeedsCompilation: yes
+Depends: R (>= 3.1.0), Rcpp
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

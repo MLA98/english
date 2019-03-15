@@ -13,7 +13,7 @@ CharacterVector suffixes = CharacterVector::create("thousand", "million", "billi
 
 // [[Rcpp::export]]
 RcppExport SEXP helper2(SEXP x_, SEXP UK){
-    Environment myEnv = Environment::global_env();
+    Environment myEnv = Environment::namespace_env("englishcpp");
     Function split_digits = myEnv["split_digits"];
     Function makeNumber = myEnv["makeNumber"];
     Function paste = myEnv["p"];
