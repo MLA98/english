@@ -2,25 +2,34 @@
 
 
 using namespace Rcpp;
-int loaded = 0;
+
+Environment myEnv = Environment::namespace_env("englishcpp");
+    Function split_digits = myEnv["split_digits"];
+    Function makeNumber = myEnv["makeNumber"];
+    Function paste = myEnv["p"];
+    Function trim = myEnv["trim"];
+    Function and_ = myEnv["and"];
 
 CharacterVector ones = CharacterVector::create(Named("0")= "", Named("1")= "one", Named("2")= "two", Named("3") = "three", Named("4")= "four", Named("5")= "five", Named("6")= "six",Named("7")= "seven", Named("8")= "eight", Named("9")= "nine");
 CharacterVector teens = CharacterVector::create(Named("0")= "ten", Named("1")= "eleven", Named("2")= "twelve", Named("3") = "thirteen", Named("4")= "fourteen", Named("5")= "fifteen", Named("6")= "sixteen",Named("7")= "seventeen", Named("8")= "eighteen", Named("9")= "nineteen");
 CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") = "thirty", Named("4")= "forty", Named("5")= "fifty", Named("6")= "sixty",Named("7")= "seventy", Named("8")= "eighty", Named("9")= "ninety");
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
+// CharacterVector split_digits(NumericVector& digit){
+//     CharacterVector digit_ = as<CharacterVector>(digit);
+//     std::string digit_str = as<std::string>(digit_); 
+//     char * chararr = new char[digit_str.size()];
+//     std::copy(digit_str.begin(), digit_str.end(), chararr);
+//     CharacterVector retV;
+//     for (int i = digit_str.size() - 1; i>=0; i-- ){
+//         retV.push_back(chararr[i]);
+//     }
+//     return retV;
+// }
 
 
-// [[Rcpp::export]]
-RcppExport SEXP helper2(SEXP x_, SEXP UK){
-    Environment myEnv = Environment::namespace_env("englishcpp");
-    Function split_digits = myEnv["split_digits"];
-    Function makeNumber = myEnv["makeNumber"];
-    Function paste = myEnv["p"];
-    Function trim = myEnv["trim"];
-    Function and_ = myEnv["and"];
-    NumericVector x = x_;
-    LogicalVector UK_ = UK;
+
+CharacterVector helper2(NumericVector x, LogicalVector UK){
     CharacterVector digits = split_digits(x);
     int nDigits = digits.size();
     if (nDigits == 1){
@@ -82,3 +91,6 @@ RcppExport SEXP helper2(SEXP x_, SEXP UK){
     }
 }
 
+RcppExport SEXP helper(SEXP x_, SEXP UK){
+    return (helper2(x_, UK));
+}

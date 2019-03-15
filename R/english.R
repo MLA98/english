@@ -166,6 +166,9 @@ format.english <- function(x, ...) {
 #' @export
 as.character.english <- function (x, ...) {
   dyn.load(paste((path.package("englishcpp")), "/libs/englishcpp.so", sep =""))
+  helper <- function(x, UK){
+    .Call("helper",x,UK)
+  }
  UK <- attr(x, "useUK")
   r <- character(length(x))
   bad <- is.na(x) | is.nan(x) | is.infinite(x)
@@ -174,11 +177,11 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n], function(x,y) x = .Call("helper2", x, y), UK))
+    r[n] <- paste("minus", sapply(-x[n], helper, UK))
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
-    r[p] <- sapply(x[p], function(x,y) x = .Call("helper2", x, y), UK)
+    r[p] <- sapply(x[p], helper, UK)
   r[is.na(x)] <- ""
   r[is.nan(x)] <- "not a number"
   if (any(k <- x < 0 & is.infinite(x)))
