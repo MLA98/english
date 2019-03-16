@@ -177,11 +177,21 @@ as.character.english <- function (x, ...) {
     x <- round(x)
   }
   if (any(n <- !bad & x < 0))
-    r[n] <- paste("minus", sapply(-x[n], helper, UK))
+    if ((length(x)) > 1){
+      r[n] <- paste("minus", sapply(-x[n], helper, UK))
+    }
+    else{
+      r[p] <- helper(-x, UK)
+    }
   if (any(z <- !bad & x == 0))
     r[z] <- "zero"
   if (any(p <- !bad & x > 0))
-    r[p] <- sapply(x[p], helper, UK)
+    if ((length(x)) > 1){
+      r[p] <- sapply(x[p], helper, UK)
+    }
+    else{
+      r[p] <- helper(x, UK)
+    }
   r[is.na(x)] <- ""
   r[is.nan(x)] <- "not a number"
   if (any(k <- x < 0 & is.infinite(x)))
