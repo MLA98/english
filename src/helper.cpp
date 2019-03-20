@@ -5,7 +5,7 @@ using namespace Rcpp;
 //Obtain R's environment
 Environment myEnv = Environment::namespace_env("englishcpp");
 // Make function callable from c++
-// Function split_digits = myEnv["split_digits"];
+Function split_digits = myEnv["split_digits"];
 Function myMakeNumber = myEnv["makeNumber"];
 Function paste = myEnv["p"];
 Function trim = myEnv["trim"];
@@ -22,17 +22,17 @@ CharacterVector tens = CharacterVector::create(Named("2")= "twenty", Named("3") 
 CharacterVector suffixes = CharacterVector::create("thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion");
 
 //written in Cpp credit to 
-CharacterVector split_digits(NumericVector& digit){
-    CharacterVector digit_ = as<CharacterVector>(digit);
-    std::string digit_str = as<std::string>(digit_); 
-    char * chararr = new char[digit_str.size()];
-    std::copy(digit_str.begin(), digit_str.end(), chararr);
-    CharacterVector retV;
-    for (int i = digit_str.size() - 1; i>=0; i-- ){
-        retV.push_back(chararr[i]);
-    }
-    return retV;
-}
+// CharacterVector split_digits(NumericVector& digit){
+//     CharacterVector digit_ = as<CharacterVector>(digit);
+//     std::string digit_str = as<std::string>(digit_); 
+//     char * chararr = new char[digit_str.size()];
+//     std::copy(digit_str.begin(), digit_str.end(), chararr);
+//     CharacterVector retV;
+//     for (int i = digit_str.size() - 1; i>=0; i-- ){
+//         retV.push_back(chararr[i]);
+//     }
+//     return retV;
+// }
 
 
 // Cpphelper help convert the number to english
